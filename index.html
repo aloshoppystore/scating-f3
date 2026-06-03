@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kids' Inline Fitness Skates Fit3 - Grey/Red | Immersive Experience</title>
+  <meta name="description" content="Discover Kids' Inline Fitness Skates Fit3. Adjustable up to 4 shoe sizes, fitted with premium rubber wheels & brakes. Order now for ₹3,299!">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container">
+      <div class="logo-container">
+        <div class="logo-icon">F3</div>
+        <div class="logo-text">Fit<span>3</span></div>
+      </div>
+      <button class="header-cart-btn" id="cart-toggle-btn" aria-label="Open Cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        <span class="cart-count-badge" id="cart-count">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    
+    <!-- 1. HIGH-PERFORMANCE CANVAS SCROLL TRACK (REPLACES STATIC HERO) -->
+    <section class="hero-canvas-track">
+      <div class="canvas-sticky-container">
+        
+        <!-- Frame preloading progress bar overlay -->
+        <div class="loader-overlay" id="hero-loader">
+          <div class="loader-spinner"></div>
+          <span class="loader-progress" id="load-progress">Loading Skates... 0%</span>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="load-progress-bar"></div>
+          </div>
+        </div>
+
+        <!-- Canvas where 240 frames will be drawn -->
+        <canvas id="hero-canvas"></canvas>
+
+        <!-- Staggered Scrolling Text Overlays -->
+        <div class="hero-text-overlay">
+          
+          <!-- Slide 1: Welcome & Rating -->
+          <div class="hero-text-slide slide-1 pos-top-left active">
+            <div class="social-proof-badge">
+              <span class="stars">★★★★★</span> 4.9 (8.2k reviews) | "95% fits as expected"
+            </div>
+            <h1>Kids' Inline Skates Fit3</h1>
+            <p>The comfortable, adjustable skates that grow with your child's feet.</p>
+          </div>
+
+          <!-- Slide 2: Grow-along sizes -->
+          <div class="hero-text-slide slide-2 pos-bottom-left">
+            <span class="slide-tag">SIZE BRACKETS</span>
+            <h1>1 Skate = 4 Sizes.</h1>
+            <p>Adjust the length in seconds to support their growth season after season.</p>
+          </div>
+
+          <!-- Slide 3: Rubber wheel grip -->
+          <div class="hero-text-slide slide-3 pos-top-right">
+            <span class="slide-tag">SAFETY FIRST</span>
+            <h1>Vulcanized Rubber Grip.</h1>
+            <p>Non-skidding rubber wheels and brakes provide stable, reliable stops.</p>
+          </div>
+
+          <!-- Slide 4: Closure support -->
+          <div class="hero-text-slide slide-4 pos-bottom-right">
+            <span class="slide-tag">LOCKDOWN SECURITY</span>
+            <h1>Triple Support System.</h1>
+            <p>Micrometric buckles, instep rip-tabs, and laces lock ankles firmly into place.</p>
+          </div>
+
+        </div>
+
+        <!-- Scroll down nudge -->
+        <div class="scroll-prompt">
+          <span>Scroll to explore details</span>
+          <svg class="scroll-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- 2. CONFIGURATOR SECTION -->
+    <section class="configurator-section" id="configure">
+      <div class="container configurator-grid">
+        
+        <!-- Left Column: Sticky Skate Previewer -->
+        <div class="config-visual-column">
+          <div class="config-sticky-wrapper">
+            <div class="config-main-image-box">
+              <img id="main-product-image" src="images/skates_grey_red.png" alt="Kids' Inline Fitness Skates Fit3 - Grey/Red">
+            </div>
+            
+            <div class="config-thumbnails">
+              <button class="thumb-btn active" data-color="grey-red" aria-label="Select Grey/Red colorway">
+                <img src="images/skates_grey_red.png" alt="Skates Grey/Red Thumbnail">
+              </button>
+              <button class="thumb-btn" data-color="blue-yellow" aria-label="Select Ocean Blue colorway">
+                <img src="images/skates_blue_yellow.png" alt="Skates Blue/Yellow Thumbnail">
+              </button>
+              <button class="thumb-btn" data-color="pink-purple" aria-label="Select Candy Pink colorway">
+                <img src="images/skates_pink_purple.png" alt="Skates Pink/Purple Thumbnail">
+              </button>
+              <button class="thumb-btn" data-color="black-green" aria-label="Select Black/Green colorway">
+                <img src="images/skates_black_green.png" alt="Skates Black/Green Thumbnail">
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Configurations Panel -->
+        <div class="config-details-column">
+          
+          <div class="config-panel-header">
+            <span class="badge badge-primary">Decathlon Fit3</span>
+            <h2>Configure Your Skates</h2>
+            <p>Customize the colorways and size bracket for a perfect grow-along fit.</p>
+          </div>
+
+          <!-- Pricing Block -->
+          <div class="config-pricing-block">
+            <div class="price-row">
+              <span class="price-title">Special Launch Price</span>
+              <div class="price-figures">
+                <span class="sale-price">₹3,299</span>
+                <span class="mrp-price">MRP ₹5,999</span>
+              </div>
+            </div>
+            <div class="offer-notice">
+              <span class="badge badge-offer">Pay only ₹1,099 now and rest later!</span>
+            </div>
+          </div>
+
+          <!-- Color Customizer -->
+          <div class="config-option-box">
+            <div class="option-header-label">
+              <span>Select Color:</span>
+              <span id="selected-color-name" class="current-selection-label">Grey/Red</span>
+            </div>
+            
+            <!-- Hidden select mapper -->
+            <select class="form-control" id="color-select" aria-label="Skate Color Select">
+              <option value="grey-red">Grey/Red (Original)</option>
+              <option value="blue-yellow">Ocean Blue / Yellow</option>
+              <option value="pink-purple">Candy Pink / Purple</option>
+              <option value="black-green">Sleek Black / Neon Green</option>
+            </select>
+            
+            <!-- Swatches -->
+            <div class="swatch-picker-group">
+              <button type="button" class="swatch-circle swatch-grey-red active" data-value="grey-red" aria-label="Grey/Red Swatch"></button>
+              <button type="button" class="swatch-circle swatch-blue-yellow" data-value="blue-yellow" aria-label="Blue/Yellow Swatch"></button>
+              <button type="button" class="swatch-circle swatch-pink-purple" data-value="pink-purple" aria-label="Pink/Purple Swatch"></button>
+              <button type="button" class="swatch-circle swatch-black-green" data-value="black-green" aria-label="Black/Green Swatch"></button>
+            </div>
+          </div>
+
+          <!-- Size Customizer -->
+          <div class="config-option-box">
+            <div class="option-header-label">
+              <span>Select Size:</span>
+              <span class="size-guide-link" id="open-size-guide-btn">Sizing Guide</span>
+            </div>
+            
+            <!-- Hidden size select mapper -->
+            <select class="form-control" id="size-select" aria-label="Skate Size Select">
+              <option value="" disabled selected>Select UK Size</option>
+              <option value="UK C10.5-13">UK C10.5-13 (Ages 6-8)</option>
+              <option value="UK C13-2.5">UK C13-2.5 (Ages 8-10)</option>
+              <option value="UK 2.5-5">UK 2.5-5 (Ages 10-12)</option>
+            </select>
+            
+            <!-- Size Block buttons -->
+            <div class="size-swatch-grid">
+              <button type="button" class="size-block-btn" data-value="UK C10.5-13">
+                <span class="size-num">UK C10.5-13</span>
+                <span class="size-meta">Ages 6 - 8</span>
+              </button>
+              <button type="button" class="size-block-btn" data-value="UK C13-2.5">
+                <span class="size-num">UK C13-2.5</span>
+                <span class="size-meta">Ages 8 - 10</span>
+              </button>
+              <button type="button" class="size-block-btn" data-value="UK 2.5-5">
+                <span class="size-num">UK 2.5-5</span>
+                <span class="size-meta">Ages 10 - 12</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Actions Group -->
+          <div class="config-actions-group">
+            <button type="button" class="btn btn-primary" id="add-to-cart-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/><line x1="12" y1="5" x2="12" y2="13"/><line x1="9" y1="8" x2="15" y2="8"/></svg>
+              Add to Cart
+            </button>
+            <button type="button" class="btn btn-secondary" id="complete-kit-btn">
+              Complete Your Kit
+            </button>
+          </div>
+
+          <!-- Trust Badges -->
+          <div class="config-trust-badges">
+            <div class="badge-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>2-Year Warranty</span>
+            </div>
+            <div class="badge-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              <span>30-Day Exchange</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 3. IMMERSIVE SCROLL-DRIVEN DETAILS STORY -->
+    <section class="scroll-story-section" id="details-story">
+      
+      <!-- Sticky canvas for visual card displays -->
+      <div class="story-sticky-gallery">
+        <div class="gallery-inner">
+          <div class="story-image-card active" data-story="1">
+            <img src="images/skates_grey_red.png" alt="Comfort interior layout design">
+          </div>
+          <div class="story-image-card" data-story="2">
+            <img src="images/skate_adjust_detail.png" alt="Sizing micro-adjustment details">
+          </div>
+          <div class="story-image-card" data-story="3">
+            <img src="images/skate_wheels.png" alt="Real rubber rolling tread wheels">
+          </div>
+          <div class="story-image-card" data-story="4">
+            <img src="images/skates_black_green.png" alt="Triple securing lockdown strap structures">
+          </div>
+        </div>
+      </div>
+
+      <!-- Scrolling panels of descriptions -->
+      <div class="story-narrative-container">
+        
+        <!-- Panel 1: Comfort -->
+        <div class="narrative-panel" data-panel="1">
+          <div class="narrative-content">
+            <span class="panel-tag">FIT & FEEL</span>
+            <h3>Fitting Comfort.</h3>
+            <p class="lead">Semi-flexible liner and foam sole with airy moisture-absorbing mesh.</p>
+            <p>Happy feet are active feet. Our dual-foam lining and anatomical sole reduce road shocks and fatigue, while the mesh structures ensure continuous cooling airflow for active children.</p>
+          </div>
+        </div>
+
+        <!-- Panel 2: Size Adaptability -->
+        <div class="narrative-panel" data-panel="2">
+          <div class="narrative-content">
+            <span class="panel-tag">SIZE EVOLUTION</span>
+            <h3>Adjusts 4 Whole Sizes.</h3>
+            <p class="lead">Skates that grow so you don't have to buy a new pair every season.</p>
+            <p>Children's feet change in the blink of an eye. The Fit3 covers four full sizes in a single bracket. Quick adjustments slide the toe box, providing seasonal comfort and great value for parents.</p>
+          </div>
+        </div>
+
+        <!-- Panel 3: Premium Grip -->
+        <div class="narrative-panel" data-panel="3">
+          <div class="narrative-content">
+            <span class="panel-tag">SAFETY FIRST</span>
+            <h3>Superior Rubber Grip.</h3>
+            <p class="lead">Real rubber wheels and brakes (no plastic/PVC) for safe braking without skidding.</p>
+            <p>Many cheap skates slide on rigid plastic (PVC) wheels, reducing stopping safety. Our skates use professional vulcanized rubber tires to grab the pavement, ensuring high-traction stopping and smooth rolls.</p>
+          </div>
+        </div>
+
+        <!-- Panel 4: Triple Security -->
+        <div class="narrative-panel" data-panel="4">
+          <div class="narrative-content">
+            <span class="panel-tag">TRIPLE SECURITY</span>
+            <h3>Maximum Foot Support.</h3>
+            <p class="lead">Triple tightening system featuring micrometric buckles, laces, and a rip-tab.</p>
+            <p>Ankle stability prevents sprains and aids progression. The triple lockdown holds ankles: the top buckle stabilizes the cuff, the rip-tab secures the heel pocket, and laces wrap it all in a personalized fit.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- 4. HOW IT WORKS: THE 3-STAGE ADJUSTMENT -->
+    <section class="section-bg-white" id="how-it-works">
+      <div class="container">
+
+        <div class="section-header">
+          <span class="badge badge-primary">Mechanical Innovation</span>
+          <h2>1 Skate = 4 Shoe Sizes</h2>
+          <p>Adjusting the skates takes less than 10 seconds. Here is how simple the mechanism is to operate:</p>
+        </div>
+
+        <div class="timeline-visual-layout">
+          <!-- Left: Diagram detail -->
+          <div class="timeline-image-wrapper">
+            <img id="adjust-stage-image" src="images/skate_adjust_detail.png" alt="Adjustment mechanism">
+          </div>
+
+          <!-- Right: Steps -->
+          <div class="timeline-steps">
+            <!-- Step 1 -->
+            <div class="timeline-step-item active" data-step="1">
+              <div class="step-counter">1</div>
+              <div class="step-info">
+                <h3>Open the lever</h3>
+                <p>Locate the locking lever situated at the bottom-side of the boot heel and flip it upward to release the sizing pin.</p>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="timeline-step-item" data-step="2">
+              <div class="step-counter">2</div>
+              <div class="step-info">
+                <h3>Pull on the front of the boot</h3>
+                <p>Hold the heel firm and pull on the front toe box of the boot. Expand or push back to slide to the correct size index.</p>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="timeline-step-item" data-step="3">
+              <div class="step-counter">3</div>
+              <div class="step-info">
+                <h3>Close the lever</h3>
+                <p>Press the lever firmly back down flat against the chassis frame. The size locks in place instantly and safely.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- 5. TECHNICAL SPECIFICATIONS -->
+    <section class="section-bg-light" id="specifications">
+      <div class="container">
+
+        <div class="section-header">
+          <span class="badge badge-primary">Specifications</span>
+          <h2>Technical Specifications</h2>
+          <p>Precision components designed for longevity, control, and beginner/intermediate progression.</p>
+        </div>
+
+        <div class="specs-table-container">
+          <table class="specs-table">
+            <thead>
+              <tr>
+                <th colspan="2">Chassis & Component Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="spec-label">Level of Practice</td>
+                <td class="spec-value">Intermediate (Outdoor Recreational Skating)</td>
+              </tr>
+              <tr>
+                <td class="spec-label">Age Range</td>
+                <td class="spec-value">6 to 12 years</td>
+              </tr>
+              <tr>
+                <td class="spec-label">Wheels</td>
+                <td class="spec-value">4 wheels (70 mm diameter, 80A hardness) - easily upgradable to 76mm wheels for larger sizes.</td>
+              </tr>
+              <tr>
+                <td class="spec-label">Bearings</td>
+                <td class="spec-value">ABEC 3 for a smooth, controlled, and safe rolling pace.</td>
+              </tr>
+              <tr>
+                <td class="spec-label">Chassis</td>
+                <td class="spec-value">Lightweight composite plastic frame for easy turning, handling, and balance.</td>
+              </tr>
+              <tr>
+                <td class="spec-label">Brake Type</td>
+                <td class="spec-value">High-grade rubber brake (can be swapped onto left or right foot).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- 6. SAFETY & MAINTENANCE FAQ -->
+    <section class="section-bg-white" id="faq">
+      <div class="container">
+
+        <div class="section-header">
+          <span class="badge badge-primary">Faq Support</span>
+          <h2>Safety & Maintenance FAQ</h2>
+          <p>Get professional answers about maintenance cycles, rubber braking safety, and gear requirements.</p>
+        </div>
+
+        <div class="faq-list">
+          <!-- FAQ 1 -->
+          <div class="faq-card active">
+            <button class="faq-trigger" aria-expanded="true" aria-controls="faq-content-1">
+              <span>Why Rubber over Plastic?</span>
+              <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-panel-body" id="faq-content-1" style="max-height: 200px;">
+              <div class="faq-inner-text">
+                Rubber provides true traction, stopping your child from slipping when pushing off and ensuring effective braking. Plastic just skids on the pavement, takes longer to stop, and wears down rapidly.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ 2 -->
+          <div class="faq-card">
+            <button class="faq-trigger" aria-expanded="false" aria-controls="faq-content-2">
+              <span>What safety gear is needed?</span>
+              <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-panel-body" id="faq-content-2">
+              <div class="faq-inner-text">
+                We strongly advise that your child always wear a helmet, elbow pads, knee pads, and wrist guards. These protectors buffer falls, protect joints, and give young learners more confidence.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ 3 -->
+          <div class="faq-card">
+            <button class="faq-trigger" aria-expanded="false" aria-controls="faq-content-3">
+              <span>How to make wheels last?</span>
+              <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-panel-body" id="faq-content-3">
+              <div class="faq-inner-text">
+                Rotate wheel positions regularly (swap the front wheels to back and swap sides in a cross pattern). Replace them completely when they wear down to the first of the seven visible rings inside the wheel.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- 7. FOOTER / FINAL CTA SECTION -->
+    <section class="final-cta">
+      <div class="container">
+        <div class="final-cta-wrapper">
+          <h2>Kids' Inline Fitness Skates Fit3</h2>
+          <p>Invest in outdoor fitness and safe learning today. Fits up to 4 shoe sizes per bracket, complete with a 2-Year Warranty.</p>
+          
+          <div class="final-cta-pricing">
+            <span class="final-price">₹3,299</span>
+            <span class="final-badge">2-Year Warranty Included</span>
+          </div>
+
+          <button class="btn btn-primary" id="footer-cta-btn" style="max-width: 300px; margin-top: 0.5rem;">
+            Choose Your Size
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Fit3 Skates. All rights reserved. Decathlon Kids Fitness Sports.</p>
+      <p style="font-size: 0.8rem; margin-top: 0.5rem; color: #475569;">Simulated checkout. Terms and conditions apply. Decathlon recreational outdoor gear.</p>
+    </div>
+  </footer>
+
+
+  <!-- CART DRAWERS OVERLAY -->
+  <div class="cart-overlay" id="cart-overlay">
+    <div class="cart-drawer">
+      <div class="cart-drawer-header">
+        <h3>Shopping Cart</h3>
+        <button class="close-cart-btn" id="cart-close-btn" aria-label="Close Cart">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="cart-drawer-body" id="cart-items-container">
+        <div class="empty-cart-state" id="empty-cart-view">
+          <svg class="empty-cart-icon" xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <p>Your cart is empty</p>
+          <button class="btn btn-secondary" id="cart-continue-shopping" style="padding: 0.6rem 1.2rem; font-size: 0.9rem; width: auto;">Shop Fit3 Skates</button>
+        </div>
+
+        <div id="cart-active-list" style="display: none; width: 100%;">
+          <div id="cart-items-list"></div>
+          
+          <form class="checkout-form" id="checkout-form" onsubmit="event.preventDefault();">
+            <h4>Shipping Information</h4>
+            <div class="form-group">
+              <label for="shipping-name">Full Name</label>
+              <input type="text" id="shipping-name" class="form-control" placeholder="Parent's Name" required>
+            </div>
+            <div class="form-group">
+              <label for="shipping-phone">Phone Number</label>
+              <input type="tel" id="shipping-phone" class="form-control" placeholder="10-digit Mobile Number" required>
+            </div>
+            <div class="form-group">
+              <label for="shipping-address">Delivery Address</label>
+              <input type="text" id="shipping-address" class="form-control" placeholder="Building, Street Name, Flat No." required>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="cart-drawer-footer" id="cart-footer-view" style="display: none;">
+        <div class="cart-totals">
+          <div class="cart-total-row">
+            <span>Subtotal</span>
+            <span id="cart-subtotal">₹0</span>
+          </div>
+          <div class="cart-total-row">
+            <span>Shipping</span>
+            <span style="color: #16a34a; font-weight: 700;">FREE</span>
+          </div>
+          <div class="cart-total-row grand-total">
+            <span>Grand Total</span>
+            <span id="cart-grand-total">₹0</span>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-primary" id="checkout-btn">
+          Complete Checkout (₹1,099 Now)
+        </button>
+        <p style="font-size: 0.75rem; text-align: center; color: var(--color-text-muted); margin-top: 0.5rem;">Secure checkouts. Pay remaining ₹2,200 COD later.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- SIZE CHART GUIDE MODAL -->
+  <div class="modal-overlay" id="size-guide-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Size selector Guide</h3>
+        <button class="close-modal-btn" id="close-size-guide-btn" aria-label="Close Modal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Decathlon's Fit3 skates cover <strong>4 sizes in a single shoe</strong>, allowing simple expansion. Consult the guideline below to select the right fit bracket:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Skate UK Size Bracket</th>
+              <th>EU Sizing Range</th>
+              <th>Suggested Age Group</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>UK C10.5 - 13</strong></td>
+              <td>EU 28 to 32</td>
+              <td>6 - 8 Years</td>
+            </tr>
+            <tr>
+              <td><strong>UK C13 - 2.5</strong></td>
+              <td>EU 32 to 35</td>
+              <td>8 - 10 Years</td>
+            </tr>
+            <tr>
+              <td><strong>UK 2.5 - 5</strong></td>
+              <td>EU 35 to 38</td>
+              <td>10 - 12 Years</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size: 0.85rem; color: var(--color-text-muted); font-style: italic; margin-top: 1rem;">Note: Brackets correspond to standard UK children sizing. If your child is in-between ranges, buy the larger bracket because you can adjust the length down.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST ALERTS CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
+
+
+  <!-- GSAP ANIMATION LIBRARIES CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  
+  <!-- INTERACTIVE JS SCRIPT -->
+  <script src="index.js"></script>
+</body>
+</html>
