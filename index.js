@@ -98,45 +98,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function preloadHeroSequence() {
     const progressText = document.getElementById('load-progress');
-    const progressBar = document.getElementById('load-progress-bar');
+    const progressBar  = document.getElementById('load-progress-bar');
     const loaderOverlay = document.getElementById('hero-loader');
 
     function handleFrameLoad() {
       loadedCount++;
       const percent = Math.round((loadedCount / frameCount) * 100);
-      
-      if (progressText) progressText.textContent = `Loading Skates... ${percent}%`;
-      if (progressBar) progressBar.style.width = `${percent}%`;
-
-      // Draw initial frames as they load to prevent flash on fast scrolls
-      if (loadedCount === 1) {
-        resizeCanvas();
-      }
-
+      if (progressText) progressText.textContent = `Loading Experience... ${percent}%`;
+      if (progressBar)  progressBar.style.width  = `${percent}%`;
+      if (loadedCount === 1) resizeCanvas();
       if (loadedCount === frameCount) {
-        // Complete preload
         setTimeout(() => {
           if (loaderOverlay) {
             loaderOverlay.style.opacity = '0';
-            setTimeout(() => {
-              loaderOverlay.style.display = 'none';
-            }, 600);
+            setTimeout(() => { loaderOverlay.style.display = 'none'; }, 800);
           }
-          // Initialize timelines once everything is loaded
-          initGSAPScrollScrub();
-        }, 400);
+          initHeroCinematic();
+        }, 300);
       }
     }
 
-    // Load frames from public folder
     for (let i = 1; i <= frameCount; i++) {
       const img = new Image();
-      img.onload = handleFrameLoad;
-      img.onerror = () => {
-        console.error(`Error loading hero frame: ezgif-frame-${i.toString().padStart(3, '0')}.png`);
-        handleFrameLoad(); // still increment to avoid locking loader
-      };
-      img.src = `public/herosection/ezgif-frame-${i.toString().padStart(3, '0')}.png`;
+      img.onload  = handleFrameLoad;
+      img.onerror = () => { handleFrameLoad(); };
+      img.src = `public/herosection/ezgif-frame-${i.toString().padStart(3,'0')}.png`;
       images.push(img);
     }
   }
@@ -146,156 +132,366 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   function resizeCanvas() {
     if (!canvas) return;
-    canvas.width = window.innerWidth;
+    canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
-    renderFrame(animationState.frame);
+    renderFrame(Math.round(animationState.frame));
   }
 
   function renderFrame(frameIdx) {
     if (!canvas || !context) return;
-    const img = images[frameIdx];
-    if (!img || !img.complete) return;
-
+    const idx = Math.max(0, Math.min(Math.round(frameIdx), images.length - 1));
+    const img = images[idx];
+    if (!img || !img.complete || !img.naturalWidth) return;
     context.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Dynamic scale-to-fill aspect math
-    const imgRatio = img.width / img.height;
-    const canvasRatio = canvas.width / canvas.height;
-
-    let drawWidth, drawHeight, drawX, drawY;
-
-    if (canvasRatio > imgRatio) {
-      drawWidth = canvas.width;
-      drawHeight = canvas.width / imgRatio;
-      drawX = 0;
-      drawY = (canvas.height - drawHeight) / 2;
+    const iR = img.naturalWidth / img.naturalHeight;
+    const cR = canvas.width / canvas.height;
+    let dW, dH, dX, dY;
+    if (cR > iR) {
+      dW = canvas.width; dH = dW / iR;
+      dX = 0;           dY = (canvas.height - dH) / 2;
     } else {
-      drawHeight = canvas.height;
-      drawWidth = canvas.height * imgRatio;
-      drawX = (canvas.width - drawWidth) / 2;
-      drawY = 0;
+      dH = canvas.height; dW = dH * iR;
+      dX = (canvas.width - dW) / 2; dY = 0;
     }
-
-    context.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+    context.drawImage(img, dX, dY, dW, dH);
   }
 
   // ==========================================
-  // GSAP SCROLL SCRUBTIMELINES
+  // CINEMATIC HERO ANIMATION ENGINE
   // ==========================================
-  function initGSAPScrollScrub() {
+  function initHeroCinematic() {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-      console.warn("GSAP libraries not loaded. Scroll animations disabled.");
+      console.warn("GSAP not loaded — hero animations disabled.");
       return;
     }
 
     gsap.registerPlugin(ScrollTrigger);
-
-    // Initial resize call and listener
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // 1. Scrub frames on scroll
+    const track     = document.querySelector('.hero-canvas-track');
+    const scrollFill = document.getElementById('hero-scroll-fill');
+    const gradientEl = document.getElementById('hero-gradient');
+    const progressDots = document.querySelectorAll('.progress-dot');
+    const promptEl  = document.getElementById('scroll-prompt');
+
+    // --------------------------------------------------
+    // Scene boundary definitions (0-1 fractions of track)
+    // --------------------------------------------------
+    const SCENES = [
+      { id: 'scene-1', from: 0,    to: 0.25 },
+      { id: 'scene-2', from: 0.25, to: 0.50 },
+      { id: 'scene-3', from: 0.50, to: 0.75 },
+      { id: 'scene-4', from: 0.75, to: 1.00 },
+    ];
+
+    // Gradient tints per scene
+    const SCENE_GRADIENTS = [
+      'linear-gradient(135deg, rgba(225,29,72,0.08) 0%, transparent 60%)',   // scene 1 – red tint left
+      'linear-gradient(225deg, rgba(59,130,246,0.10) 0%, transparent 70%)',  // scene 2 – blue tint right
+      'linear-gradient(45deg,  rgba(34,197,94,0.08) 0%, transparent 60%)',   // scene 3 – green tint
+      'linear-gradient(180deg, transparent 0%, rgba(225,29,72,0.12) 100%)',  // scene 4 – red bottom
+    ];
+
+    // --------------------------------------------------
+    // 1. MASTER FRAME SCRUB
+    // --------------------------------------------------
     gsap.to(animationState, {
       frame: frameCount - 1,
-      snap: "frame",
-      ease: "none",
+      ease: 'none',
       scrollTrigger: {
-        trigger: ".hero-canvas-track",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.3
+        trigger: track,
+        start: 'top top',
+        end:   'bottom bottom',
+        scrub: 0.5,
       },
-      onUpdate: () => renderFrame(animationState.frame)
+      onUpdate: () => renderFrame(animationState.frame),
     });
 
-    // 2. Staggered text overlay animations
-    const tlText = gsap.timeline({
+    // --------------------------------------------------
+    // 2. TOP SCROLL FILL BAR + GRADIENT OVERLAY
+    // --------------------------------------------------
+    const scrollProgress = { p: 0 };
+    let currentScene = 0;
+
+    ScrollTrigger.create({
+      trigger: track,
+      start: 'top top',
+      end:   'bottom bottom',
+      scrub: true,
+      onUpdate: (self) => {
+        const p = self.progress;
+        scrollProgress.p = p;
+
+        // Top bar fill
+        if (scrollFill) scrollFill.style.width = (p * 100) + '%';
+
+        // Determine active scene
+        const sceneIdx = SCENES.findIndex(s => p >= s.from && p < s.to);
+        const si = sceneIdx === -1 ? 3 : sceneIdx;
+
+        if (si !== currentScene) {
+          currentScene = si;
+
+          // Update progress dots
+          progressDots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === si);
+          });
+
+          // Swap gradient tint
+          if (gradientEl) {
+            gradientEl.style.background = SCENE_GRADIENTS[si];
+            gradientEl.style.opacity    = '1';
+          }
+        }
+      },
+    });
+
+    // --------------------------------------------------
+    // 3. SCROLL PROMPT — fade out after 5% scroll
+    // --------------------------------------------------
+    if (promptEl) {
+      gsap.to(promptEl, {
+        opacity: 0,
+        y: 12,
+        ease: 'power2.in',
+        scrollTrigger: {
+          trigger: track,
+          start: 'top top',
+          end:   'top -8%',
+          scrub: true,
+        },
+      });
+    }
+
+    // --------------------------------------------------
+    // 4. SCENE 1  — Intro text (top-left, lines rise up)
+    // --------------------------------------------------
+    const s1tl = gsap.timeline({
       scrollTrigger: {
-        trigger: ".hero-canvas-track",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: true
-      }
+        trigger: track,
+        start: 'top top',
+        end:   '25% top',    // first quarter of 500vh = 125vh
+        scrub: 0.6,
+      },
     });
 
-    // Animate Text Slides
-    // Slide 1 (Welcome) starts visible, slides out
-    tlText.to(".slide-1", { opacity: 0, y: -45, duration: 1.5 }, 0);
+    // Entry: lines slide up from below
+    gsap.set('.text-line', { yPercent: 108 });
+    s1tl
+      .to('.text-line', {
+        yPercent: 0,
+        stagger: 0.04,
+        ease: 'power3.out',
+        duration: 0.6,
+      }, 0)
+      .from('#s1-eyebrow', {
+        opacity: 0, y: 20, duration: 0.5, ease: 'power2.out',
+      }, 0.1)
+      .from('#s1-sub', {
+        opacity: 0, y: 18, duration: 0.5, ease: 'power2.out',
+      }, 0.2)
+      .from('#s1-rating', {
+        opacity: 0, y: 16, scale: 0.92, duration: 0.5, ease: 'back.out(1.5)',
+      }, 0.3);
 
-    // Slide 2 (Sizes) fades in at 20%, fades out at 40%
-    tlText.fromTo(".slide-2", { opacity: 0, y: 45 }, { opacity: 1, y: 0, duration: 1.5 }, 2);
-    tlText.to(".slide-2", { opacity: 0, y: -45, duration: 1.5 }, 4.5);
+    // Stats strip entry
+    const statNums = document.querySelectorAll('.stat-num');
+    s1tl.from('#s1-stats', {
+      opacity: 0, y: 30, scale: 0.95, duration: 0.6, ease: 'power3.out',
+    }, 0.35);
 
-    // Slide 3 (Rubber Wheels) fades in at 50%, fades out at 70%
-    tlText.fromTo(".slide-3", { opacity: 0, y: 45 }, { opacity: 1, y: 0, duration: 1.5 }, 6);
-    tlText.to(".slide-3", { opacity: 0, y: -45, duration: 1.5 }, 8.5);
+    // Animate stat counters (count-up when strip enters)
+    statNums.forEach(num => {
+      const target = parseInt(num.dataset.target, 10);
+      s1tl.to(num, {
+        innerHTML: target,
+        duration: 0.8,
+        ease: 'power2.out',
+        snap: { innerHTML: 1 },
+        onUpdate() {
+          num.textContent = Math.round(parseFloat(num.textContent));
+        },
+      }, 0.5);
+    });
 
-    // Slide 4 (Closure system) fades in at 80% to the end
-    tlText.fromTo(".slide-4", { opacity: 0, y: 45 }, { opacity: 1, y: 0, duration: 1.5 }, 10);
-    tlText.to(".slide-4", { opacity: 0, y: -45, duration: 1.5 }, 12.5);
-
-    // Hide Scroll Prompt near bottom of hero
-    gsap.to(".canvas-sticky-container .scroll-prompt", {
-      opacity: 0,
-      y: 10,
+    // Scene 1 EXIT — slide everything left & fade
+    const s1exit = gsap.timeline({
       scrollTrigger: {
-        trigger: ".hero-canvas-track",
-        start: "top -5%",
-        end: "top -15%",
-        scrub: true
-      }
+        trigger: track,
+        start: '18% top',
+        end:   '25% top',
+        scrub: 0.4,
+      },
+    });
+    s1exit
+      .to('#scene-1 .block-top-left > *', {
+        opacity: 0, x: -50, stagger: 0.03, duration: 0.5, ease: 'power2.in',
+      })
+      .to('#s1-stats', {
+        opacity: 0, y: 20, duration: 0.4, ease: 'power2.in',
+      }, 0);
+
+    // --------------------------------------------------
+    // 5. SCENE 2  — Size feature card (bottom-left) + size tracker (right)
+    // --------------------------------------------------
+    const s2enter = gsap.timeline({
+      scrollTrigger: {
+        trigger: track,
+        start: '25% top',
+        end:   '38% top',
+        scrub: 0.5,
+      },
     });
 
-    // 3. Immersive benefits story visual swaps
-    const panels = document.querySelectorAll(".narrative-panel");
-    const cards = document.querySelectorAll(".story-image-card");
+    gsap.set('#s2-card', { opacity: 0, x: -80 });
+    gsap.set('#s2-visual', { opacity: 0, x: 80 });
+
+    s2enter
+      .to('#s2-card', {
+        opacity: 1, x: 0, duration: 0.8, ease: 'power3.out',
+      }, 0)
+      .to('#s2-visual', {
+        opacity: 1, x: 0, duration: 0.8, ease: 'power3.out',
+      }, 0.1);
+
+    // Size track fill animation — fills the connector lines
+    const sizeTrackFills = document.querySelectorAll('.size-track-fill');
+    s2enter.to(sizeTrackFills, {
+      width: '100%',
+      stagger: 0.15,
+      duration: 0.5,
+      ease: 'power2.inOut',
+    }, 0.4);
+
+    // Activate size nodes progressively
+    const sizeNodes = document.querySelectorAll('.size-node');
+    sizeNodes.forEach((node, i) => {
+      s2enter.to(node, {
+        backgroundColor: 'rgba(225,29,72,0.18)',
+        borderColor: 'var(--color-primary)',
+        color: '#fff',
+        boxShadow: '0 0 16px rgba(225,29,72,0.35)',
+        duration: 0.3,
+        ease: 'power1.out',
+      }, 0.3 + i * 0.15);
+    });
+
+    // Scene 2 EXIT
+    const s2exit = gsap.timeline({
+      scrollTrigger: {
+        trigger: track,
+        start: '43% top',
+        end:   '50% top',
+        scrub: 0.4,
+      },
+    });
+    s2exit
+      .to('#s2-card',   { opacity: 0, x: -50, duration: 0.5, ease: 'power2.in' }, 0)
+      .to('#s2-visual', { opacity: 0, x: 50,  duration: 0.5, ease: 'power2.in' }, 0);
+
+    // --------------------------------------------------
+    // 6. SCENE 3  — Safety card (top-right)
+    // --------------------------------------------------
+    gsap.set('#s3-card', { opacity: 0, x: 80, y: -20 });
+
+    const s3enter = gsap.timeline({
+      scrollTrigger: {
+        trigger: track,
+        start: '50% top',
+        end:   '63% top',
+        scrub: 0.5,
+      },
+    });
+    s3enter.to('#s3-card', {
+      opacity: 1, x: 0, y: 0, duration: 0.9, ease: 'power3.out',
+    });
+
+    // Scene 3 EXIT
+    const s3exit = gsap.timeline({
+      scrollTrigger: {
+        trigger: track,
+        start: '68% top',
+        end:   '75% top',
+        scrub: 0.4,
+      },
+    });
+    s3exit.to('#s3-card', {
+      opacity: 0, x: 80, duration: 0.5, ease: 'power2.in',
+    });
+
+    // --------------------------------------------------
+    // 7. SCENE 4  — Lockdown card (center-bottom) + CTA
+    // --------------------------------------------------
+    gsap.set('#s4-card', { opacity: 0, y: 60, scale: 0.93 });
+    gsap.set('#s4-cta',  { opacity: 0, y: 30 });
+
+    const s4enter = gsap.timeline({
+      scrollTrigger: {
+        trigger: track,
+        start: '75% top',
+        end:   '88% top',
+        scrub: 0.5,
+      },
+    });
+    s4enter
+      .to('#s4-card', {
+        opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'power3.out',
+      }, 0)
+      .to('#s4-cta', {
+        opacity: 1, y: 0, duration: 0.6, ease: 'power2.out',
+      }, 0.4);
+
+    // --------------------------------------------------
+    // 8. PROGRESS DOT CLICK — jump to scene
+    // --------------------------------------------------
+    const trackEl = document.getElementById('hero-section');
+    progressDots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        const frac = SCENES[i].from + 0.01;
+        const scrollTarget = trackEl.offsetTop + frac * trackEl.offsetHeight;
+        window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+      });
+    });
+
+    // --------------------------------------------------
+    // 9. BELOW-HERO: story image swap
+    // --------------------------------------------------
+    const panels = document.querySelectorAll('.narrative-panel');
+    const storyCards = document.querySelectorAll('.story-image-card');
 
     panels.forEach((panel, index) => {
       ScrollTrigger.create({
         trigger: panel,
-        start: "top center",
-        end: "bottom center",
-        onEnter: () => activateStoryCard(index + 1),
-        onEnterBack: () => activateStoryCard(index + 1)
+        start: 'top center',
+        end: 'bottom center',
+        onEnter:     () => activateStoryCard(index + 1),
+        onEnterBack: () => activateStoryCard(index + 1),
       });
     });
 
-    function activateStoryCard(storyId) {
-      cards.forEach(card => {
-        if (parseInt(card.dataset.story) === storyId) {
-          card.classList.add("active");
-        } else {
-          card.classList.remove("active");
-        }
-      });
+    function activateStoryCard(id) {
+      storyCards.forEach(c => c.classList.toggle('active', parseInt(c.dataset.story) === id));
     }
 
-    // 4. Reveal specs on scroll
-    gsap.from(".specs-table-container", {
-      scrollTrigger: {
-        trigger: "#specifications",
-        start: "top 80%",
-        toggleActions: "play none none none"
-      },
-      opacity: 0,
-      y: 50,
-      duration: 1,
-      ease: "power3.out"
+    // --------------------------------------------------
+    // 10. Specs & FAQ reveal
+    // --------------------------------------------------
+    gsap.from('.specs-table-container', {
+      scrollTrigger: { trigger: '#specifications', start: 'top 80%', toggleActions: 'play none none none' },
+      opacity: 0, y: 50, duration: 1, ease: 'power3.out',
     });
 
-    // 5. Reveal FAQ list on scroll
-    gsap.from(".faq-list", {
-      scrollTrigger: {
-        trigger: "#faq",
-        start: "top 80%",
-        toggleActions: "play none none none"
-      },
-      opacity: 0,
-      y: 50,
-      duration: 1,
-      ease: "power3.out"
+    gsap.from('.faq-list', {
+      scrollTrigger: { trigger: '#faq', start: 'top 80%', toggleActions: 'play none none none' },
+      opacity: 0, y: 50, duration: 1, ease: 'power3.out',
     });
+
+    console.log('🎬 Cinematic Hero Engine: all timelines armed.');
   }
+
+  // Legacy alias so nothing else breaks
+  function initGSAPScrollScrub() { initHeroCinematic(); }
 
   // ==========================================
   // CONFIGURATOR COLOR SWAPPER

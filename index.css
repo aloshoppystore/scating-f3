@@ -294,11 +294,13 @@ header .container {
 }
 
 /* ==========================================
-   1. CANVAS SCROLL-SCRUB INTRO HERO
+   1. CINEMATIC CANVAS SCROLL HERO
    ========================================== */
+
+/* ---- Track & Sticky Container ---- */
 .hero-canvas-track {
-  height: 400vh; /* Scroll track define */
-  background-color: #000000;
+  height: 500vh;
+  background-color: #000;
   position: relative;
 }
 
@@ -308,205 +310,593 @@ header .container {
   height: 100vh;
   width: 100%;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 #hero-canvas {
-  display: block;
-  z-index: 1;
-}
-
-/* Loader Overlay */
-.loader-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #000000;
-  z-index: 100;
+  z-index: 1;
+  display: block;
+}
+
+/* ---- Cinematic Vignette ---- */
+.hero-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 80% 80% at 50% 50%,
+    transparent 40%,
+    rgba(0,0,0,0.55) 100%
+  );
+}
+
+/* ---- Dynamic gradient overlay (tinted per scene) ---- */
+.hero-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: background 0.6s ease, opacity 0.6s ease;
+}
+
+/* ---- Loader Overlay ---- */
+.loader-overlay {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 200;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.25rem;
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  gap: 1.5rem;
   color: white;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+.loader-logo-mark {
+  font-family: var(--font-family-title);
+  font-size: 3rem;
+  font-weight: 900;
+  color: white;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.loader-logo-mark span { color: var(--color-primary); }
 
 .loader-spinner {
-  width: 44px;
-  height: 44px;
-  border: 3px solid rgba(255, 255, 255, 0.15);
+  width: 40px;
+  height: 40px;
+  border: 2.5px solid rgba(255,255,255,0.12);
   border-top-color: var(--color-primary);
-  border-radius: var(--radius-full);
-  animation: spin 1s linear infinite;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .loader-progress {
   font-family: var(--font-family-title);
-  font-weight: 700;
-  font-size: 1.15rem;
-  letter-spacing: -0.01em;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
 }
 
 .progress-bar-container {
-  width: 240px;
-  height: 4px;
-  background-color: #1e293b;
-  border-radius: var(--radius-full);
+  width: 200px;
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 999px;
   overflow: hidden;
 }
 
 .progress-bar-fill {
-  width: 0%;
   height: 100%;
-  background-color: var(--color-primary);
-  box-shadow: 0 0 10px var(--color-primary);
-  transition: width 0.15s ease-out;
+  width: 0%;
+  background: var(--color-primary);
+  box-shadow: 0 0 12px var(--color-primary);
+  transition: width 0.1s ease-out;
+  border-radius: 999px;
 }
 
-/* Text overlays on top of canvas */
-.hero-text-overlay {
+/* ---- Hero Scroll Progress Bar (top edge) ---- */
+.hero-scroll-bar {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  right: 0;
+  height: 3px;
+  z-index: 50;
+  background: rgba(255,255,255,0.08);
+}
+.hero-scroll-fill {
   height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--color-primary), #f97316);
+  box-shadow: 0 0 10px var(--color-primary);
+  transition: width 0.05s linear;
+  border-radius: 0 999px 999px 0;
+}
+
+/* ---- Scene System ---- */
+.hero-scene {
+  position: absolute;
+  inset: 0;
   z-index: 10;
   pointer-events: none;
+  display: flex;
+  align-items: stretch;
 }
 
-.hero-text-slide {
+.scene-block {
   position: absolute;
-  color: white;
-  max-width: 440px;
-  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  gap: 1.25rem;
 }
 
-/* Position mapping for features */
-.pos-top-left {
-  top: 18%;
-  left: 8%;
-  text-align: left;
-  align-items: flex-start;
+.block-top-left {
+  top: 14%;
+  left: 7%;
+  max-width: 480px;
 }
 
-.pos-bottom-left {
-  bottom: 18%;
-  left: 8%;
-  text-align: left;
-  align-items: flex-start;
+.block-bottom-left {
+  bottom: 10%;
+  left: 7%;
+  max-width: 440px;
 }
 
-.pos-top-right {
-  top: 18%;
-  right: 8%;
-  text-align: right;
+.block-top-right {
+  top: 14%;
+  right: 7%;
+  max-width: 440px;
   align-items: flex-end;
 }
 
-.pos-bottom-right {
-  bottom: 18%;
-  right: 8%;
-  text-align: right;
-  align-items: flex-end;
+.block-center-bottom {
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 600px;
+  align-items: center;
+  text-align: center;
+  width: 90%;
 }
 
-.hero-text-slide.active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.hero-text-slide h1 {
-  font-size: 2.75rem;
-  font-weight: 800;
-  color: #ffffff;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
-}
-
-.hero-text-slide p {
-  font-size: 1.1rem;
-  color: #94a3b8;
-  line-height: 1.45;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-}
-
-.slide-tag {
+/* ---- Scene 1: Intro Text ---- */
+.scene-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-family: var(--font-family-title);
-  color: var(--color-primary);
-  font-size: 0.8rem;
-  font-weight: 800;
+  font-size: 0.75rem;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-}
-
-.hero-text-slide .social-proof-badge {
-  background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.08);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  width: fit-content;
+  will-change: transform, opacity;
+}
+
+.eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 8px var(--color-primary);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.7); }
+}
+
+.scene-headline {
+  font-family: var(--font-family-title);
+  font-weight: 900;
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  line-height: 1.0;
+  letter-spacing: -0.04em;
+  color: #fff;
+  text-shadow: 0 6px 30px rgba(0,0,0,0.7);
+  overflow: hidden;
+}
+
+.line-wrap {
+  display: block;
+  overflow: hidden;
+}
+
+.text-line {
+  display: block;
+  font-style: normal;
+  will-change: transform;
+}
+
+.scene-subtext {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.55;
+  max-width: 360px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  will-change: transform, opacity;
+}
+
+.scene-rating-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  color: rgba(255,255,255,0.9);
+  font-size: 0.9rem;
+  font-weight: 600;
+  width: fit-content;
+  will-change: transform, opacity;
+}
+
+.scene-rating-pill .stars {
+  color: #f59e0b;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+/* ---- Stats Strip (scene 1, bottom) ---- */
+.hero-stats-strip {
+  position: absolute;
+  bottom: 9%;
+  right: 7%;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.5rem;
+  z-index: 11;
+  will-change: transform, opacity;
+}
+
+.stat-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1.5rem;
+  gap: 0.15rem;
+}
+
+.stat-num {
+  font-family: var(--font-family-title);
+  font-size: 2rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255,255,255,0.12);
+}
+
+/* ---- Feature Cards ---- */
+.feature-card {
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  pointer-events: auto;
+  will-change: transform, opacity;
+  max-width: 400px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  border-color: rgba(225,29,72,0.4);
+  box-shadow: 0 8px 32px rgba(225,29,72,0.15), 0 0 0 1px rgba(225,29,72,0.1) inset;
+}
+
+.feature-card-icon {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  border-radius: var(--radius-md);
+  background: rgba(225,29,72,0.15);
+  border: 1px solid rgba(225,29,72,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+}
+
+.feature-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.feature-card-tag {
+  font-family: var(--font-family-title);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.feature-card-headline {
+  font-family: var(--font-family-title);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+
+.feature-card-text {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.5;
+  margin-top: 0.2rem;
+}
+
+/* Right-aligned card for scene 3 */
+.card-right {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+.card-right .feature-card-body { align-items: flex-end; }
+
+/* Center-aligned card for scene 4 */
+.card-center {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 560px;
+  padding: 2rem;
+}
+.card-center .feature-card-body { align-items: center; }
+
+/* ---- Scene 2: Size Tracker Visual ---- */
+.scene-size-visual {
+  position: absolute;
+  top: 50%;
+  right: 7%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  will-change: transform, opacity;
+}
+
+.size-track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.size-node {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 2px solid rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family-title);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.5);
+  transition: all 0.4s ease;
+}
+
+.active-node {
+  background: rgba(225,29,72,0.2);
+  border-color: var(--color-primary);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(225,29,72,0.4);
+  transform: scale(1.15);
+}
+
+.size-track-line {
+  width: 40px;
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.size-track-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: var(--color-primary);
+  box-shadow: 0 0 6px var(--color-primary);
+}
+
+.size-track-label {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* ---- CTA Strip (scene 4) ---- */
+.hero-cta-strip {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  will-change: transform, opacity;
+}
+
+.cta-price {
+  font-family: var(--font-family-title);
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.6);
+  font-weight: 500;
+}
+.cta-price strong {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.cta-btn-hero {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--color-primary);
   color: white;
+  font-family: var(--font-family-title);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.85rem 2rem;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  pointer-events: auto;
+  box-shadow: 0 8px 30px rgba(225,29,72,0.5);
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
-/* Responsive override for mobile/tablet */
-@media (max-width: 1024px) {
-  .hero-text-slide {
-    top: auto !important;
-    left: 5% !important;
-    right: 5% !important;
-    bottom: 8% !important;
-    text-align: center !important;
-    align-items: center !important;
-    max-width: 90% !important;
-  }
-  .hero-text-slide h1 {
-    font-size: 2.25rem;
-  }
-  .hero-text-slide p {
-    font-size: 1.05rem;
-  }
+.cta-btn-hero:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(225,29,72,0.65);
 }
 
-/* Scroll prompt at bottom of hero */
-.canvas-sticky-container .scroll-prompt {
+/* ---- Progress Navigation Dots (right side) ---- */
+.hero-progress-nav {
+  position: absolute;
+  right: 1.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  pointer-events: auto;
+}
+
+.progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+  border: 1.5px solid transparent;
+}
+
+.progress-dot.active {
+  background: var(--color-primary);
+  border-color: rgba(225,29,72,0.4);
+  box-shadow: 0 0 10px rgba(225,29,72,0.6);
+  transform: scale(1.4);
+}
+
+.progress-dot:hover:not(.active) {
+  background: rgba(255,255,255,0.6);
+  transform: scale(1.2);
+}
+
+/* ---- Scroll Prompt ---- */
+.scroll-prompt {
   position: absolute;
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 20;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   font-family: var(--font-family-title);
+  font-size: 0.75rem;
   font-weight: 600;
-  font-size: 0.9rem;
-  color: #64748b;
-  z-index: 15;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  pointer-events: none;
 }
 
-.canvas-sticky-container .scroll-arrow {
-  color: #64748b;
-  animation: bounce 1.8s infinite;
+.scroll-arrow {
+  color: rgba(255,255,255,0.35);
+  animation: bounce-arrow 2s ease-in-out infinite;
 }
 
-@keyframes bounce {
+@keyframes bounce-arrow {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(6px); }
+  50% { transform: translateY(7px); }
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1024px) {
+  .block-top-right { right: 5%; }
+  .block-bottom-left { left: 5%; }
+  .block-top-left { left: 5%; max-width: 90vw; }
+  .scene-headline { font-size: clamp(2rem, 8vw, 3.5rem); }
+  .hero-stats-strip { right: 5%; bottom: 5%; padding: 0.75rem 1rem; }
+  .stat-pill { padding: 0 0.85rem; }
+  .stat-num { font-size: 1.5rem; }
+  .scene-size-visual { display: none; }
+  .hero-progress-nav { right: 0.85rem; }
+  .feature-card { max-width: 90vw; }
+  .block-center-bottom { bottom: 5%; }
+}
+
+@media (max-width: 640px) {
+  .hero-stats-strip { display: none; }
+  .scene-headline { font-size: 2.5rem; }
+  .feature-card-headline { font-size: 1.35rem; }
+  .hero-progress-nav { display: none; }
 }
 
 /* ==========================================

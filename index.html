@@ -25,60 +25,150 @@
 
   <main>
     
-    <!-- 1. HIGH-PERFORMANCE CANVAS SCROLL TRACK (REPLACES STATIC HERO) -->
-    <section class="hero-canvas-track">
+    <!-- 1. CINEMATIC CANVAS SCROLL HERO -->
+    <section class="hero-canvas-track" id="hero-section">
       <div class="canvas-sticky-container">
-        
-        <!-- Frame preloading progress bar overlay -->
+
+        <!-- Frame preloading overlay -->
         <div class="loader-overlay" id="hero-loader">
+          <div class="loader-logo-mark">F<span>3</span></div>
           <div class="loader-spinner"></div>
-          <span class="loader-progress" id="load-progress">Loading Skates... 0%</span>
+          <span class="loader-progress" id="load-progress">Loading Experience... 0%</span>
           <div class="progress-bar-container">
             <div class="progress-bar-fill" id="load-progress-bar"></div>
           </div>
         </div>
 
-        <!-- Canvas where 240 frames will be drawn -->
+        <!-- Canvas: 240-frame cinematic scroll -->
         <canvas id="hero-canvas"></canvas>
 
-        <!-- Staggered Scrolling Text Overlays -->
-        <div class="hero-text-overlay">
-          
-          <!-- Slide 1: Welcome & Rating -->
-          <div class="hero-text-slide slide-1 pos-top-left active">
-            <div class="social-proof-badge">
-              <span class="stars">★★★★★</span> 4.9 (8.2k reviews) | "95% fits as expected"
+        <!-- Dark cinematic vignette -->
+        <div class="hero-vignette"></div>
+
+        <!-- Dynamic gradient overlay that shifts per scene -->
+        <div class="hero-gradient-overlay" id="hero-gradient"></div>
+
+        <!-- ===================== SCENE 1: Intro ===================== -->
+        <div class="hero-scene scene-1" id="scene-1">
+          <!-- Top-left: Brand intro text -->
+          <div class="scene-block block-top-left">
+            <div class="scene-eyebrow" id="s1-eyebrow">
+              <span class="eyebrow-dot"></span>
+              <span>DECATHLON FIT3</span>
             </div>
-            <h1>Kids' Inline Skates Fit3</h1>
-            <p>The comfortable, adjustable skates that grow with your child's feet.</p>
+            <h1 class="scene-headline" id="s1-headline">
+              <span class="line-wrap"><em class="text-line">Kids' Inline</em></span>
+              <span class="line-wrap"><em class="text-line">Skates Fit3</em></span>
+            </h1>
+            <p class="scene-subtext" id="s1-sub">The adjustable skates that grow with your child — season after season.</p>
+            <div class="scene-rating-pill" id="s1-rating">
+              <span class="stars">★★★★★</span>
+              <span>4.9 &nbsp;·&nbsp; 8,200+ Reviews</span>
+            </div>
           </div>
 
-          <!-- Slide 2: Grow-along sizes -->
-          <div class="hero-text-slide slide-2 pos-bottom-left">
-            <span class="slide-tag">SIZE BRACKETS</span>
-            <h1>1 Skate = 4 Sizes.</h1>
-            <p>Adjust the length in seconds to support their growth season after season.</p>
+          <!-- Bottom-right: Quick stat strip -->
+          <div class="hero-stats-strip" id="s1-stats">
+            <div class="stat-pill">
+              <span class="stat-num" data-target="4">0</span>
+              <span class="stat-label">Sizes in 1</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-pill">
+              <span class="stat-num" data-target="240">0</span>
+              <span class="stat-label">Frames of Detail</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-pill">
+              <span class="stat-num" data-target="2">0</span>
+              <span class="stat-label">Year Warranty</span>
+            </div>
           </div>
+        </div>
 
-          <!-- Slide 3: Rubber wheel grip -->
-          <div class="hero-text-slide slide-3 pos-top-right">
-            <span class="slide-tag">SAFETY FIRST</span>
-            <h1>Vulcanized Rubber Grip.</h1>
-            <p>Non-skidding rubber wheels and brakes provide stable, reliable stops.</p>
+        <!-- ===================== SCENE 2: Size Feature ===================== -->
+        <div class="hero-scene scene-2" id="scene-2">
+          <div class="scene-block block-bottom-left">
+            <div class="feature-card card-left" id="s2-card">
+              <div class="feature-card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+              </div>
+              <div class="feature-card-body">
+                <span class="feature-card-tag">SIZE BRACKETS</span>
+                <h2 class="feature-card-headline">1 Skate = 4 Sizes</h2>
+                <p class="feature-card-text">Expand the toe box in seconds. One bracket covers an entire growth season.</p>
+              </div>
+            </div>
           </div>
-
-          <!-- Slide 4: Closure support -->
-          <div class="hero-text-slide slide-4 pos-bottom-right">
-            <span class="slide-tag">LOCKDOWN SECURITY</span>
-            <h1>Triple Support System.</h1>
-            <p>Micrometric buckles, instep rip-tabs, and laces lock ankles firmly into place.</p>
+          <div class="scene-size-visual" id="s2-visual">
+            <div class="size-track">
+              <div class="size-node active-node">C10.5</div>
+              <div class="size-track-line"><div class="size-track-fill"></div></div>
+              <div class="size-node">C11</div>
+              <div class="size-track-line"><div class="size-track-fill"></div></div>
+              <div class="size-node">C12</div>
+              <div class="size-track-line"><div class="size-track-fill"></div></div>
+              <div class="size-node">C13</div>
+            </div>
+            <p class="size-track-label">UK C10.5 → C13 · Ages 6–8</p>
           </div>
+        </div>
 
+        <!-- ===================== SCENE 3: Safety Feature ===================== -->
+        <div class="hero-scene scene-3" id="scene-3">
+          <div class="scene-block block-top-right">
+            <div class="feature-card card-right" id="s3-card">
+              <div class="feature-card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="feature-card-body">
+                <span class="feature-card-tag">SAFETY FIRST</span>
+                <h2 class="feature-card-headline">Vulcanized Rubber</h2>
+                <p class="feature-card-text">Real rubber wheels & brake — not cheap PVC plastic. Grips the pavement, stops reliably.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================== SCENE 4: Lockdown Feature ===================== -->
+        <div class="hero-scene scene-4" id="scene-4">
+          <div class="scene-block block-center-bottom">
+            <div class="feature-card card-center" id="s4-card">
+              <div class="feature-card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div class="feature-card-body">
+                <span class="feature-card-tag">LOCKDOWN SECURITY</span>
+                <h2 class="feature-card-headline">Triple Support System</h2>
+                <p class="feature-card-text">Micrometric buckle · Instep rip-tab · Lace system. Three-layer ankle lockdown keeps kids safe.</p>
+              </div>
+            </div>
+            <!-- CTA Strip in final scene -->
+            <div class="hero-cta-strip" id="s4-cta">
+              <span class="cta-price">From <strong>₹3,299</strong></span>
+              <a href="#configure" class="cta-btn-hero">Configure Yours
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scene progress navigation dots (right side) -->
+        <div class="hero-progress-nav" id="hero-progress-nav">
+          <div class="progress-dot active" data-scene="1" title="Intro"></div>
+          <div class="progress-dot" data-scene="2" title="Size"></div>
+          <div class="progress-dot" data-scene="3" title="Safety"></div>
+          <div class="progress-dot" data-scene="4" title="Security"></div>
+        </div>
+
+        <!-- Scroll progress bar at top -->
+        <div class="hero-scroll-bar" id="hero-scroll-bar">
+          <div class="hero-scroll-fill" id="hero-scroll-fill"></div>
         </div>
 
         <!-- Scroll down nudge -->
-        <div class="scroll-prompt">
-          <span>Scroll to explore details</span>
+        <div class="scroll-prompt" id="scroll-prompt">
+          <span>Scroll to explore</span>
           <svg class="scroll-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
         </div>
 
